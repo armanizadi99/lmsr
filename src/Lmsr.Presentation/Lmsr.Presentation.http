@@ -1,0 +1,6 @@
+@Lmsr.Presentation_HostAddress = http://localhost:5293
+
+GET {{Lmsr.Presentation_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
