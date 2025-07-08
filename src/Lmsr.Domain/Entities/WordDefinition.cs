@@ -4,13 +4,14 @@ namespace Lmsr.Domain.Entities;
 public class WordDefinition : BaseEntity<int>
 {
 public string Text {get; private set; }
-public WordType type {get; private set; }
+public WordType Type {get; private set; }
 public int WordId {get; private set; }
 public Word Word {get; private set; }
 
-public WordDefinition(string text, Word word)
+public WordDefinition(string text, WordType wordType, Word word)
 {
 SetText(text);
+Type=wordType;
 _linkToWord(word);
 }
 
