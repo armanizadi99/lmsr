@@ -4,7 +4,7 @@ namespace Lmsr.Domain.Entities;
 public class Word : BaseEntity<int>
 {
 public string Term {get; private set; }
-public IReadOnlyCollection<WordDefinition> WordDefinitions;
+public IReadOnlyCollection<WordDefinition> WordDefinitions = new List<WordDefinition>();
 public int CourseId {get; private set; }
 public Course Course {get; private set; }
 
