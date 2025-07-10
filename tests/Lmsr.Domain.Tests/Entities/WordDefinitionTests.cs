@@ -61,7 +61,7 @@ Action act = ()=> new WordDefinition(_validText, invalidType, _word);
 act.Should()
 .Throw<ArgumentException>()
 .WithParameterName("type")
-.WithMessage("Given type is undefined. (Parameter \'type\')");
+.WithMessage("type is undefined. (Parameter \'type\')");
 }
 
 [Fact]
