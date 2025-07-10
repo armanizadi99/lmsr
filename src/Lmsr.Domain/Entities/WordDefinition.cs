@@ -11,7 +11,7 @@ public Word Word {get; private set; }
 public WordDefinition(string text, WordType wordType, Word word)
 {
 SetText(text);
-Type=wordType;
+_setType(wordType);
 _linkToWord(word);
 }
 
@@ -30,5 +30,11 @@ throw new ArgumentNullException(nameof(text));
 if(string.IsNullOrWhiteSpace(text))
 throw new ArgumentException("Text must not be white space or empty.", nameof(text));
 Text=text;
+}
+private void _setType(WordType type)
+{
+if(!Enum.IsDefined(typeof(WordType), type))
+throw new ArgumentException("type is undefined.", nameof(type));
+Type=type;
 }
 }
