@@ -1,12 +1,13 @@
 using Lmsr.Domain.Common;
+using System.Collections.Generic;
 namespace Lmsr.Domain.Aggregates;
-public class Course : IBaseEntity<int>
+public class Course : BaseEntity<int>
 {
-private List<int> _wordsReference;
+private List<int> _wordsReference = new List<int>();
 public string Title { get; private set; }
 public string UserId { get; private set; }
 public bool IsPrivate { get; private set; }
-public IReadOnlyCollection<int> WordsReference = _wordsReference.AsReadOnly();
+public IReadOnlyCollection<int> WordsReference;
 
 private Course(){ }
 
@@ -21,29 +22,38 @@ throw new ValidationException("IsPrivate shouldn't be null.");
 Title = title;
 UserId = userId;
 IsPrivate = isPrivate;
+WordsReference = _wordsReference.AsReadOnly();
 }
 
-public void AddWordReference(int referenceId)
+public Result AddWordReference(int referenceId)
 {
 if(referenceId == null)
 throw new ValidationException("Reference id must not be null.");
+List<string> errors = new List<string>();
 if(_wordsReference.Contains(referenceId))
-throw new DomainRouleViolationException("This reference already exists.");
+errors.Add("This reference already exists.");
+if(errors.Any())
+return Result.Failure(errors);
 _wordsReference.Add(referenceId);
+return Result.Success();
 }
 
-public void RemoveWordReference(int referenceId)
+public Result RemoveWordReference(int referenceId)
 {
 if(referenceId == null)
 throw new ValidationException("Reference id must not be null.");
+List<string> errors = new List<string>();
 if(!_wordsReference.Contains(referenceId))
-throw new InvalidDomainOperationException("This reference doesn't exist.");
+errors.Add("This reference doesn't exist.");
+if(errors.Any())
+return Result.Failure(errors);
 _wordsReference.Remove(referenceId);
+return Result.Success();
 }
 
 public void MakeCoursePrivate()
 {
-IsPrivate true;
+IsPrivate = true;
 }
 
 public void MakeCoursePublic()
