@@ -21,7 +21,7 @@ Definitions = _definitions.AsReadOnly();
 public Result SetTerm(string term)
 {
 if(term == null || string.IsNullOrWhiteSpace(term))
-throw new ValidationException("Invalid term. term Shouldn't be null, empty or whitespace.");
+throw new DomainValidationException("Invalid term. term Shouldn't be null, empty or whitespace.");
 Term = term;
 return Result.Success();
 }
@@ -29,7 +29,7 @@ return Result.Success();
 public Result<WordDefinition> AddDefinition(string text, WordType type)
 {
 if(string.IsNullOrWhiteSpace(text))
-throw new ValidationException("Invalid text. Text shouldn't be null, empty or whitespace.");
+throw new DomainValidationException("Invalid text. Text shouldn't be null, empty or whitespace.");
 List<string> errors= new List<string>();
 if(_definitions.Exists(d => string.Equals(d.Text, text, StringComparison.OrdinalIgnoreCase)))
 errors.Add("This definition already exists.");

@@ -17,14 +17,14 @@ WordId = wordId;
 internal Result _setText(string text)
 {
 if(string.IsNullOrWhiteSpace(text))
-throw new ValidationException("Invalid text. Text shouldn't be null, empty or white space.");
+throw new DomainValidationException("Invalid text. Text shouldn't be null, empty or white space.");
 Text = text;
 return Result.Success();
 }
 internal void _setType(WordType type)
 {
 if(!Enum.IsDefined(typeof(WordDefinition), type))
-throw new ValidationException("Invalid Type. Type must be one of the predefined types.");
+throw new DomainValidationException("Invalid Type. Type must be one of the predefined types.");
 Type = type;
 }
 }

@@ -4,9 +4,9 @@ public class DomainException : Exception
 public DomainException(string message) : base(message){}
 }
 
-public class ValidationException : DomainException
+public class DomainValidationException : DomainException
 {
-public ValidationException (string message) : base(message){}
+public DomainValidationException (string message) : base(message){}
 }
 
 public class DomainRouleViolationException : DomainException

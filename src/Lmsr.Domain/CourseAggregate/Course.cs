@@ -14,11 +14,11 @@ private Course(){ }
 public Course(string title, string userId, bool isPrivate)
 {
 if(title == null || string.IsNullOrWhiteSpace(title))
-throw new ValidationException("Invalid title. Title Shouldn't be null, empty or whitespace.");
+throw new DomainValidationException("Invalid title. Title Shouldn't be null, empty or whitespace.");
 if(userId == null || string.IsNullOrWhiteSpace(userId))
-throw new ValidationException("Invalid userId. UserId Shouldn't be null, empty or whitespace.");
+throw new DomainValidationException("Invalid userId. UserId Shouldn't be null, empty or whitespace.");
 if(isPrivate == null)
-throw new ValidationException("IsPrivate shouldn't be null.");
+throw new DomainValidationException("IsPrivate shouldn't be null.");
 Title = title;
 UserId = userId;
 IsPrivate = isPrivate;
@@ -28,7 +28,7 @@ WordsReference = _wordsReference.AsReadOnly();
 public Result AddWordReference(int referenceId)
 {
 if(referenceId == null)
-throw new ValidationException("Reference id must not be null.");
+throw new DomainValidationException("Reference id must not be null.");
 List<string> errors = new List<string>();
 if(_wordsReference.Contains(referenceId))
 errors.Add("This reference already exists.");
@@ -41,7 +41,7 @@ return Result.Success();
 public Result RemoveWordReference(int referenceId)
 {
 if(referenceId == null)
-throw new ValidationException("Reference id must not be null.");
+throw new DomainValidationException("Reference id must not be null.");
 List<string> errors = new List<string>();
 if(!_wordsReference.Contains(referenceId))
 errors.Add("This reference doesn't exist.");
@@ -64,7 +64,7 @@ IsPrivate = false;
 public void ChangeTitle(string title)
 {
 if(title == null || string.IsNullOrWhiteSpace(title))
-throw new ValidationException("Invalid title. Title Shouldn't be null, empty or whitespace.");
+throw new DomainValidationException("Invalid title. Title Shouldn't be null, empty or whitespace.");
 Title = title;
 }
 }
