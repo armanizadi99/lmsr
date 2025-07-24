@@ -13,9 +13,9 @@ private Course(){ }
 
 public Course(string title, string userId, bool isPrivate)
 {
-if(title == null || string.IsNullOrWhiteSpace(title))
+if(string.IsNullOrWhiteSpace(title))
 throw new DomainValidationException("Invalid title. Title Shouldn't be null, empty or whitespace.");
-if(userId == null || string.IsNullOrWhiteSpace(userId))
+if(string.IsNullOrWhiteSpace(userId))
 throw new DomainValidationException("Invalid userId. UserId Shouldn't be null, empty or whitespace.");
 if(isPrivate == null)
 throw new DomainValidationException("IsPrivate shouldn't be null.");
@@ -28,7 +28,14 @@ WordsReference = _wordsReference.AsReadOnly();
 public Result AddWordReference(int referenceId)
 {
 if(referenceId == null)
+<<<<<<< Updated upstream
 throw new DomainValidationException("Reference id must not be null.");
+=======
+throw new ValidationException("Reference id must not be null.");
+List<string> errors = new List<string>();
+
+// this should throw exception as well, since we really don't expect duplicate references, this will have to be handled by application layer.
+>>>>>>> Stashed changes
 if(_wordsReference.Contains(referenceId))
 throw new DomainValidationException("This reference already exists.");
 List<string> errors = new List<string>();
