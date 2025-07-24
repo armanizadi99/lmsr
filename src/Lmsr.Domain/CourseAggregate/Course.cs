@@ -28,14 +28,7 @@ WordsReference = _wordsReference.AsReadOnly();
 public Result AddWordReference(int referenceId)
 {
 if(referenceId == null)
-<<<<<<< Updated upstream
 throw new DomainValidationException("Reference id must not be null.");
-=======
-throw new ValidationException("Reference id must not be null.");
-List<string> errors = new List<string>();
-
-// this should throw exception as well, since we really don't expect duplicate references, this will have to be handled by application layer.
->>>>>>> Stashed changes
 if(_wordsReference.Contains(referenceId))
 throw new DomainValidationException("This reference already exists.");
 List<string> errors = new List<string>();
