@@ -20,8 +20,8 @@ Definitions = _definitions.AsReadOnly();
 
 public Result SetTerm(string term)
 {
-if(term == null || string.IsNullOrWhiteSpace(term))
-throw new DomainValidationException("Invalid term. term Shouldn't be null, empty or whitespace.");
+if(string.IsNullOrWhiteSpace(term))
+throw new DomainValidationException("Invalid term. Term Shouldn't be null, empty or whitespace.");
 Term = term;
 return Result.Success();
 }
