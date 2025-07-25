@@ -23,7 +23,7 @@ return Result.Success();
 }
 internal void _setType(WordType type)
 {
-if(!Enum.IsDefined(typeof(WordDefinition), type))
+if(!Enum.IsDefined(typeof(WordType), type))
 throw new DomainValidationException("Invalid Type. Type must be one of the predefined types.");
 Type = type;
 }

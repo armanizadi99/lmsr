@@ -27,8 +27,6 @@ WordsReference = _wordsReference.AsReadOnly();
 
 public Result AddWordReference(int referenceId)
 {
-if(referenceId == null)
-throw new DomainValidationException("Reference id must not be null.");
 if(_wordsReference.Contains(referenceId))
 throw new DomainValidationException("This reference already exists.");
 List<string> errors = new List<string>();
@@ -40,10 +38,8 @@ return Result.Success();
 
 public Result RemoveWordReference(int referenceId)
 {
-if(referenceId == null)
-throw new DomainValidationException("Reference id must not be null.");
 if(!_wordsReference.Contains(referenceId))
-throw new DomainValidationException("This reference doesn't exist.");
+throw new InvalidDomainOperationException("This reference doesn't exist.");
 List<string> errors = new List<string>();
 if(errors.Any())
 return Result.Failure(errors);
@@ -63,7 +59,7 @@ IsPrivate = false;
 
 public void ChangeTitle(string title)
 {
-if(title == null || string.IsNullOrWhiteSpace(title))
+if(string.IsNullOrWhiteSpace(title))
 throw new DomainValidationException("Invalid title. Title Shouldn't be null, empty or whitespace.");
 Title = title;
 }
