@@ -1,3 +1,3 @@
 using Lmsr.Application.ViewModels;
 namespace Lmsr.Application.Courses;
-public record GetAllCoursesQuery(int courseId) : IRequest<Result<List<CourseViewModel>>>;
+public record GetAllCoursesQuery() : IRequest<Result<List<CourseViewModel>>>;
