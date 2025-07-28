@@ -3,5 +3,5 @@ public interface IUnitOfWork
 {
 ICourseRepository CourseRepo {get; }
 IWordRepository WordRepo {get; }
-void Commit();
+Task SaveChangesAsync();
 }

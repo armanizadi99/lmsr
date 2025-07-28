@@ -26,7 +26,7 @@ if(errors.Any())
 return Result<int>.Failure(errors);
 var course = new Course(command.Title, command.UserId, command.IsPrivate);
 await _unitOfWork.CourseRepo.AddAsync(course);
-_unitOfWork.Commit();
+await _unitOfWork.SaveChangesAsync();
 return Result<int>.Success(course.Id);
 }
 }
