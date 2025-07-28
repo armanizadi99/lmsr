@@ -25,7 +25,7 @@ errors.Add("A course with the same name exists.");
 if(errors.Any())
 return Result<int>.Failure(errors);
 var course = new Course(command.Title, command.UserId, command.IsPrivate);
-await _unitOfWork.CourseRepo.Add(course);
+await _unitOfWork.CourseRepo.AddAsync(course);
 _unitOfWork.Commit();
 return Result<int>.Success(course.Id);
 }

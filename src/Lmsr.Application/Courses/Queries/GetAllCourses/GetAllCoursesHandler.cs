@@ -11,7 +11,7 @@ _repository = repository;
 }
 public async Task<Result<List<CourseViewModel>>> Handle(GetAllCoursesQuery query, CancellationToken cancellationToken)
 {
-var courses = await _repository.GetAll();
+var courses = await _repository.GetAllCoursesAsync();
 return Result<List<CourseViewModel>>.Success(courses.Select(c => new CourseViewModel(c.Id, c.Title, c.UserId)).ToList());
 }
 }
