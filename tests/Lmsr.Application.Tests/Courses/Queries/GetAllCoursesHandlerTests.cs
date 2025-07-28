@@ -23,7 +23,7 @@ course2.Id = 2;
 var course3 = new Course("english curses", "baduser", true);
 course3.Id = 3;
 courses.AddRange(course1, course2, course3);
-mockCourseRepository.Setup(m => m.GetAll()).ReturnsAsync(courses);
+mockCourseRepository.Setup(m => m.GetAllCoursesAsync()).ReturnsAsync(courses);
 var handler = new GetAllCoursesHandler(mockCourseRepository.Object);
 var query = new GetAllCoursesQuery();
 

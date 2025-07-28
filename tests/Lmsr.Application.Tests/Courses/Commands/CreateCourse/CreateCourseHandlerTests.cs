@@ -22,7 +22,7 @@ var mockCourseRepo = new Mock<ICourseRepository>();
 Course capturedCourse = null;
 mockUserIdAuthenticitySpec.Setup( m => m.IsUserIdAuthentic(It.IsAny<string>())).Returns(true);
 mockTitleUniquenessSpec.Setup(m => m.IsTitleUnique(It.IsAny<string>())).Returns(true);
-mockCourseRepo.Setup(m => m.Add(It.IsAny<Course>()))
+mockCourseRepo.Setup(m => m.AddAsync(It.IsAny<Course>()))
 .Callback<Course>(c => {c.Id=1; capturedCourse = c;})
 .Returns(Task.CompletedTask);
 mockUnitOfWork.Setup(m => m.CourseRepo).Returns(mockCourseRepo.Object);
@@ -41,7 +41,7 @@ result.Value.Should().Be(1);
 capturedCourse.Title.Should().Be(title);
 capturedCourse.UserId.Should().Be(userId);
 capturedCourse.IsPrivate.Should().Be(isPrivate);
-mockUnitOfWork.Verify(m => m.Commit(), Times.Once);
+mockUnitOfWork.Verify(m => m.SaveChangesAsync(), Times.Once);
 }
 
 [Fact]
