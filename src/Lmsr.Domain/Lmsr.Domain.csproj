@@ -8,5 +8,6 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="Lmsr.Application.Tests" />
+    <InternalsVisibleTo Include="Lmsr.Infrastructure.Tests" />
   </ItemGroup>
 </Project>
