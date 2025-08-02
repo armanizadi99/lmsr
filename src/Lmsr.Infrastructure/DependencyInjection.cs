@@ -6,6 +6,9 @@ using Lmsr.Application.Interfaces;  // Example interfaces location
 using Lmsr.Application.Repositories;
 using Lmsr.Infrastructure.Db; // AppDbContext location
 using Lmsr.Infrastructure.Db.Repositories; // Repo implementations
+using Lmsr.Domain.Aggregates.Specifications;
+using Lmsr.Infrastructure.Specifications;
+
 namespace Lmsr.Infrastructure;
 public static class DependencyInjection
 {
@@ -30,6 +33,8 @@ services.AddScoped<IUnitOfWork, UnitOfWork>();
 services.AddScoped<ICourseRepository, CourseRepository>();
 services.AddScoped<IWordRepository, WordRepository>();
 services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+services.AddScoped<ICourseTitleUniquenessSpecification, CourseTitleUniquenessSpecification>();
+services.AddScoped<ICourseUserIdAuthenticitySpecification, CourseUserIdAuthenticitySpecification>();
 
 return services;
 }
