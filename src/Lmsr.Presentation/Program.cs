@@ -25,14 +25,13 @@ builder.Services.AddApplication();
 var app = builder.Build();
 
 
-app.UseMiddleware<ValidationExceptionMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-
 app.UseHttpsRedirection();
-
-
+app.UseRouting();
+app.UseMiddleware<ValidationExceptionMiddleware>();
+app.MapControllers();
 
 app.Run();
