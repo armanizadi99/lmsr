@@ -1,6 +1,7 @@
 using Lmsr.Infrastructure;
 using Lmsr.Application.Behaviors;
 using Lmsr.Application.Courses;
+using Lmsr.Application;
 using MediatR;
 using Lmsr.Presentation;
 
@@ -14,7 +15,7 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavi
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
-
+builder.Services.AddApplication();
 var app = builder.Build();
 
 
