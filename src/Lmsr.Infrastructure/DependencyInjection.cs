@@ -26,7 +26,7 @@ options.UseSqlite(configuration.GetConnectionString("SqliteConnection")));
 else if(environment.IsProduction())
 {
 services.AddDbContext<AppDbContext>(options =>
-options.UseSqlServer(configuration.GetConnectionString("SqlServerConnection")));
+options.UseSqlite(configuration.GetConnectionString("SqliteConnection")));
 }
 
 services.AddScoped<IUnitOfWork, UnitOfWork>();
