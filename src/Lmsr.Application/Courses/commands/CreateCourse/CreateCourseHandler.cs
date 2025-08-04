@@ -19,9 +19,9 @@ public async Task<Result<int>> Handle(CreateCourseCommand command, CancellationT
 if(!_userIdAuthenticitySpec.IsUserIdAuthentic(command.UserId))
 throw new InvalidDomainOperationException("Invalid UserId. ");
 
-List<string> errors = new List<string>();
+List<DomainError> errors = new List<DomainError>();
 if(!_titleUniquenessSpec.IsTitleUnique(command.Title))
-errors.Add("A course with the same name exists.");
+errors.Add(new DomainError(ErrorCodes.DuplicateEntity, "Course", "A course with the same name exists."));
 if(errors.Any())
 return Result<int>.Failure(errors);
 var course = new Course(command.Title, command.UserId, command.IsPrivate);
