@@ -32,6 +32,8 @@ var result = await _bus.Send(new GetAllCoursesQuery());
 if(!result.IsSuccess)
 return BadRequest(result.Errors);
 var course = result.Value.FirstOrDefault(c => c.Id == id);
+if(course == null)
+return NotFound();
 return Ok(course);
 }
 }
