@@ -36,4 +36,11 @@ if(course == null)
 return NotFound();
 return Ok(course);
 }
+
+[Route("all")]
+[HttpGet]
+public async Task<IActionResult> GetAllCourses()
+{
+return Ok((await _bus.Send(new GetAllCoursesQuery())).Value);
+}
 }
