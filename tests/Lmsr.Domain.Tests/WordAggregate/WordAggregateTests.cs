@@ -103,7 +103,7 @@ var secondResult = word.AddDefinition(duplicateText, WordType.Verb);
 // Assert
 firstResult.IsSuccess.Should().BeTrue();
 secondResult.IsSuccess.Should().BeFalse();
-secondResult.Errors.Should().Contain("This definition already exists.");
+secondResult.Errors.Should().Contain(new DomainError(ErrorCodes.DuplicateEntity, "Definition", "This definition already exists."));
 }
 
 [Fact]
@@ -133,7 +133,7 @@ var result = word.RemoveDefinition(0);
 
 // Assert
 result.IsSuccess.Should().BeFalse();
-result.Errors.Should().Contain("Definition not found.");
+result.Errors.Should().Contain(new DomainError(ErrorCodes.NotFound, "Definition", "Definition not found."));
 }
 
 [Fact]
@@ -175,12 +175,12 @@ public void ChangeDefinitionText_NoneExistingDefinition_ShouldReturnError()
 // Arrange
 var word = new Word(_validTerm, 1);
 
-// Assert
+// Act
 var result = word.ChangeDefinitionText("Text won't change because no such definition exists.", 0);
 
 // Assert
 result.IsSuccess.Should().BeFalse();
-result.Errors.Should().Contain("Definition not found.");
+result.Errors.Should().Contain(new DomainError(ErrorCodes.NotFound, "Definition", "Definition not found."));
 }
 
 [Fact]
@@ -226,7 +226,7 @@ var result = word.ChangeDefinitionType(WordType.Pronoun, 0);
 
 // Assert
 result.IsSuccess.Should().BeFalse();
-result.Errors.Should().Contain("Definition not found.");
+result.Errors.Should().Contain(new DomainError(ErrorCodes.NotFound, "Definition", "Definition not found."));
 }
 
 [Fact]
