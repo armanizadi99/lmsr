@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lmsr.Infrastructure.Tests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lmsr.Presentation.Tests", "tests\Lmsr.Presentation.Tests\Lmsr.Presentation.Tests.csproj", "{B08F26D8-4C2E-4E40-839A-7955117993BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer", "IdentityServer\IdentityServer.csproj", "{5A892F99-51A2-4C4E-9A7D-D427F6C2E677}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +131,18 @@ Global
 		{B08F26D8-4C2E-4E40-839A-7955117993BF}.Release|x64.Build.0 = Release|Any CPU
 		{B08F26D8-4C2E-4E40-839A-7955117993BF}.Release|x86.ActiveCfg = Release|Any CPU
 		{B08F26D8-4C2E-4E40-839A-7955117993BF}.Release|x86.Build.0 = Release|Any CPU
+		{5A892F99-51A2-4C4E-9A7D-D427F6C2E677}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A892F99-51A2-4C4E-9A7D-D427F6C2E677}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A892F99-51A2-4C4E-9A7D-D427F6C2E677}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5A892F99-51A2-4C4E-9A7D-D427F6C2E677}.Debug|x64.Build.0 = Debug|Any CPU
+		{5A892F99-51A2-4C4E-9A7D-D427F6C2E677}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5A892F99-51A2-4C4E-9A7D-D427F6C2E677}.Debug|x86.Build.0 = Debug|Any CPU
+		{5A892F99-51A2-4C4E-9A7D-D427F6C2E677}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A892F99-51A2-4C4E-9A7D-D427F6C2E677}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A892F99-51A2-4C4E-9A7D-D427F6C2E677}.Release|x64.ActiveCfg = Release|Any CPU
+		{5A892F99-51A2-4C4E-9A7D-D427F6C2E677}.Release|x64.Build.0 = Release|Any CPU
+		{5A892F99-51A2-4C4E-9A7D-D427F6C2E677}.Release|x86.ActiveCfg = Release|Any CPU
+		{5A892F99-51A2-4C4E-9A7D-D427F6C2E677}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
