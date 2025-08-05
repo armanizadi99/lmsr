@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using MediatR;
 using Lmsr.Domain.Aggregates;
 using Lmsr.Application.Courses;
 
 namespace Lmsr.Presentation.Controllers;
-
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class CourseController : ControllerBase
@@ -26,6 +27,7 @@ return CreatedAtAction(nameof(GetCourseById), new { id = result.Value});
 }
 
 [HttpGet]
+[AllowAnonymous]
 public async Task<IActionResult> GetCourseById([FromQuery] int id)
 {
 var result = await _bus.Send(new GetAllCoursesQuery());
@@ -39,6 +41,7 @@ return Ok(course);
 
 [Route("all")]
 [HttpGet]
+[AllowAnonymous]
 public async Task<IActionResult> GetAllCourses()
 {
 return Ok((await _bus.Send(new GetAllCoursesQuery())).Value);

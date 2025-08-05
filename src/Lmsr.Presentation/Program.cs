@@ -5,6 +5,9 @@ using Lmsr.Application;
 using MediatR;
 using Lmsr.Presentation;
 using Serilog;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +26,19 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 builder.Services.AddInfrastructure(builder.Configuration, builder.Environment);
 builder.Services.AddApplication();
 builder.Services.AddControllers();
+
+builder.Services.AddAuthentication("Bearer")
+.AddJwtBearer("Bearer", options =>
+{
+options.Authority = "https://localhost:5001"; // URL of your IdentityServer project
+options.TokenValidationParameters = new TokenValidationParameters
+{
+ValidateAudience = false
+};
+});
+
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 
@@ -32,6 +48,10 @@ if (app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseMiddleware<ValidationExceptionMiddleware>();
 app.MapControllers();
 
