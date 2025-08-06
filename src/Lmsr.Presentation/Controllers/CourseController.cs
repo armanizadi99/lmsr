@@ -4,7 +4,7 @@ using MediatR;
 using Lmsr.Domain.Aggregates;
 using Lmsr.Application.Courses;
 using Lmsr.Presentation.Dtos;
-
+using System.Security.Claims;
 namespace Lmsr.Presentation.Controllers;
 [Authorize]
 [ApiController]
