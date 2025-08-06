@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using MediatR;
 using Lmsr.Domain.Aggregates;
 using Lmsr.Application.Courses;
+using Lmsr.Presentation.Dtos;
 
 namespace Lmsr.Presentation.Controllers;
 [Authorize]
@@ -18,7 +19,7 @@ _bus = bus;
 [HttpPost]
 public async Task<IActionResult> Create([FromBody] CreateCourseDto dto)
 {
-var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 var result = await _bus.Send(new CreateCourseCommand(dto.Title, userId, false));
 
 if(!result.IsSuccess)
