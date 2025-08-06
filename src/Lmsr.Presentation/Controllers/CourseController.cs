@@ -16,9 +16,10 @@ public CourseController(IMediator bus)
 _bus = bus;
 }
 [HttpPost]
-public async Task<IActionResult> Create([FromBody] CreateCourseCommand command)
+public async Task<IActionResult> Create([FromBody] CreateCourseDto dto)
 {
-var result = await _bus.Send(command);
+var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+var result = await _bus.Send(new CreateCourseCommand(dto.Title, userId, false));
 
 if(!result.IsSuccess)
 return BadRequest(result.Errors);
