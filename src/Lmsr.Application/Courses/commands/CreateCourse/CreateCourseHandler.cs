@@ -5,26 +5,31 @@ public class CreateCourseHandler : IRequestHandler<CreateCourseCommand, Result<i
 {
 private IUnitOfWork _unitOfWork;
 private ICourseTitleUniquenessSpecification _titleUniquenessSpec;
-private ICourseUserIdAuthenticitySpecification _userIdAuthenticitySpec;
+private IUserContext _userContext;
 
-public CreateCourseHandler(IUnitOfWork unitOfWork, ICourseTitleUniquenessSpecification titleUniquenessSpec, ICourseUserIdAuthenticitySpecification userIdAuthenticitySpec)
+public CreateCourseHandler(IUnitOfWork unitOfWork, ICourseTitleUniquenessSpecification titleUniquenessSpec, IUserContext userContext)
 {
 _unitOfWork = unitOfWork;
 _titleUniquenessSpec = titleUniquenessSpec;
-_userIdAuthenticitySpec = userIdAuthenticitySpec;
+_userContext=userContext;
 }
 
 public async Task<Result<int>> Handle(CreateCourseCommand command, CancellationToken cancellationToken)
 {
-if(!_userIdAuthenticitySpec.IsUserIdAuthentic(command.UserId))
-throw new InvalidDomainOperationException("Invalid UserId. ");
-
 List<DomainError> errors = new List<DomainError>();
-if(!_titleUniquenessSpec.IsTitleUnique(command.Title))
-errors.Add(new DomainError(ErrorCodes.DuplicateEntity, "Course", "A course with the same name exists."));
-if(errors.Any())
+var userId = _userContext.UserId;
+if(string.IsNullOrEmpty(userId))
+{
+errors.Add(new DomainError(ErrorCodes.NotAuthorized, "Authorization", "You aren't authorized."));
 return Result<int>.Failure(errors);
-var course = new Course(command.Title, command.UserId, command.IsPrivate);
+}
+if(!_titleUniquenessSpec.IsTitleUnique(command.Title))
+{
+errors.Add(new DomainError(ErrorCodes.DuplicateEntity, "Course", "A course with the same name exists."));
+return Result<int>.Failure(errors);
+}
+
+var course = new Course(command.Title, userId, command.IsPrivate);
 await _unitOfWork.CourseRepo.AddAsync(course);
 await _unitOfWork.SaveChangesAsync();
 return Result<int>.Success(course.Id);
