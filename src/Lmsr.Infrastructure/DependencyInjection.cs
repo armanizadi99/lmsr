@@ -35,6 +35,7 @@ services.AddScoped<IWordRepository, WordRepository>();
 services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 services.AddScoped<ICourseTitleUniquenessSpecification, CourseTitleUniquenessSpecification>();
 services.AddScoped<ICourseUserIdAuthenticitySpecification, CourseUserIdAuthenticitySpecification>();
+services.AddScoped<IUserContext, UserContext>();
 
 return services;
 }
