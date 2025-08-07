@@ -19,8 +19,7 @@ _bus = bus;
 [HttpPost]
 public async Task<IActionResult> Create([FromBody] CreateCourseDto dto)
 {
-var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-var result = await _bus.Send(new CreateCourseCommand(dto.Title, userId, false));
+var result = await _bus.Send(new CreateCourseCommand(dto.Title, false));
 
 if(!result.IsSuccess)
 return BadRequest(result.Errors);
