@@ -18,7 +18,12 @@ modelBuilder.Entity<Word>()
 modelBuilder.Entity<Course>()
 .HasIndex(c => c.Title)
 .IsUnique();
-
+modelBuilder.Entity<Word>()
+.HasIndex(w => new { w.CourseId, w.Term })
+.IsUnique();
+modelBuilder.Entity<WordDefinition>()
+.HasIndex(wd => new { wd.WordId, wd.Text})
+.IsUnique();
 modelBuilder.Entity<Course>()
 .ToTable(t => {
 t.HasCheckConstraint("CK_Course_Title_NotEmpty", "Title <> ''");
