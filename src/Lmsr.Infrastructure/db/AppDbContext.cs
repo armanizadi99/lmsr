@@ -18,12 +18,6 @@ modelBuilder.Entity<Word>()
 modelBuilder.Entity<Course>()
 .HasIndex(c => c.Title)
 .IsUnique();
-modelBuilder.Entity<Word>()
-.HasIndex(w => w.Term)
-.IsUnique();
-modelBuilder.Entity<WordDefinition>()
-.HasIndex(wd => wd.Text)
-.IsUnique();
 
 modelBuilder.Entity<Course>()
 .ToTable(t => {
