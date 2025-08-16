@@ -47,4 +47,13 @@ public async Task<IActionResult> GetAllCourses()
 {
 return Ok((await _bus.Send(new GetAllCoursesQuery())).Value);
 }
+
+[HttpDelete]
+public async Task<IActionResult> DeleteCourse([FromQuery] int courseId)
+{
+var result = await _bus.Send(new DeleteCourseCommand(courseId));
+if(!result.IsSuccess)
+return BadRequest(result.Errors);
+return NoContent();
+}
 }
