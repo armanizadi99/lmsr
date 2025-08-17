@@ -22,7 +22,7 @@ if(_userContext.UserId != course.UserId)
 {
 return Result<Word>.Failure(new List<DomainError>() {new DomainError(ErrorCodes.NotAuthorized, "UnauthorizedAccessToCourse", "You can't modify this course. You aren't the owner.")});
 }
-if(!_wordTermUniquenessSpec.IsWordTermUnique(command.Term))
+if(!_wordTermUniquenessSpec.IsWordTermUnique(command.Term, command.CourseId))
 {
 return Result<Word>.Failure(new List<DomainError>() {new DomainError(ErrorCodes.DuplicateEntity, "Word", "You can't add two words with the same term in a course.")});
 }
