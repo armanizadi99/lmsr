@@ -16,17 +16,14 @@ _userContext=userContext;
 
 public async Task<Result<int>> Handle(CreateCourseCommand command, CancellationToken cancellationToken)
 {
-List<DomainError> errors = new List<DomainError>();
 var userId = _userContext.UserId;
 if(string.IsNullOrEmpty(userId))
 {
-errors.Add(new DomainError(ErrorCodes.NotAuthorized, "Authorization", "You aren't authorized."));
-return Result<int>.Failure(errors);
+return Result<int>.Failure(new DomainError(ErrorCodes.NotAuthorized, "Authorization", "You aren't authorized."));
 }
 if(!_titleUniquenessSpec.IsTitleUnique(command.Title))
 {
-errors.Add(new DomainError(ErrorCodes.DuplicateEntity, "Course", "A course with the same name exists."));
-return Result<int>.Failure(errors);
+return Result<int>.Failure(new DomainError(ErrorCodes.DuplicateEntity, "Course", "A course with the same name exists."));
 }
 
 var course = new Course(command.Title, userId, command.IsPrivate);
