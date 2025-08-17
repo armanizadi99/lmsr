@@ -29,9 +29,6 @@ public Result AddWordReference(int referenceId)
 {
 if(_wordsReference.Contains(referenceId))
 throw new DomainValidationException("This reference already exists.");
-List<DomainError> errors = new List<DomainError>();
-if(errors.Any())
-return Result.Failure(errors);
 _wordsReference.Add(referenceId);
 return Result.Success();
 }
@@ -40,9 +37,6 @@ public Result RemoveWordReference(int referenceId)
 {
 if(!_wordsReference.Contains(referenceId))
 throw new InvalidDomainOperationException("This reference doesn't exist.");
-List<DomainError> errors = new List<DomainError>();
-if(errors.Any())
-return Result.Failure(errors);
 _wordsReference.Remove(referenceId);
 return Result.Success();
 }
