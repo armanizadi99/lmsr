@@ -36,7 +36,7 @@ mockUnitOfWork.Setup(m => m.WordRepo)
 .Returns(mockWordRepo.Object);
 mockUnitOfWork.Setup(m => m.CourseRepo)
 .Returns(mockCourseRepo.Object);
-mockWordTermUniquenessSpec.Setup(m => m.IsWordTermUnique(It.IsAny<string>()))
+mockWordTermUniquenessSpec.Setup(m => m.IsWordTermUnique(It.IsAny<string>(), It.IsAny<int>()))
 .Returns(true);
 mockUserContext.Setup(m => m.UserId).Returns(userId);
 var handler = new AddWordToCourseHandler(mockUnitOfWork.Object, mockUserContext.Object, mockWordTermUniquenessSpec.Object);
@@ -113,12 +113,13 @@ var mockWordTermUniquenessSpec = new Mock<IWordTermUniquenessSpecification>();
 var mockUserContext = new Mock<IUserContext>();
 var userId = Guid.NewGuid().ToString();
 var course = new Course("course1", userId, false);
+course.Id=1;
 mockCourseRepo.Setup(m => m.GetCourseByIdAsync(It.IsAny<int>()))
 .ReturnsAsync(course);
 mockUnitOfWork.Setup(m => m.CourseRepo)
 .Returns(mockCourseRepo.Object);
 mockUserContext.Setup(m => m.UserId).Returns(userId);
-mockWordTermUniquenessSpec.Setup(m => m.IsWordTermUnique("word1")).Returns(false);
+mockWordTermUniquenessSpec.Setup(m => m.IsWordTermUnique("word1", 1)).Returns(false);
 var handler = new AddWordToCourseHandler(mockUnitOfWork.Object, mockUserContext.Object, mockWordTermUniquenessSpec.Object);
 var command = new AddWordToCourseCommand("word1", 1);
 
