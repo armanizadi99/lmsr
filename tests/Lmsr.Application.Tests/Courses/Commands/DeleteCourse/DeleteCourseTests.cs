@@ -54,7 +54,7 @@ var result = await handler.Handle(command, CancellationToken.None);
 
 // Assert
 result.IsSuccess.Should().BeFalse();
-result.Errors.Should().Contain(new DomainError(ErrorCodes.NotAuthorized, "Authorization", "You aren't authorized."));
+result.Error.Should().Be(new DomainError(ErrorCodes.NotAuthorized, "Authorization", "You aren't authorized."));
 }
 
 [Fact]
@@ -79,7 +79,7 @@ var result = await handler.Handle(command, CancellationToken.None);
 
 // Assert
 result.IsSuccess.Should().BeFalse();
-result.Errors.Should().Contain(new DomainError(ErrorCodes.NotAuthorized, "Course", "You can't delete this resource. You aren't the owner."));
+result.Error.Should().Be(new DomainError(ErrorCodes.NotAuthorized, "Course", "You can't delete this resource. You aren't the owner."));
 }
 
 [Fact]
@@ -104,6 +104,6 @@ var result = await handler.Handle(command, CancellationToken.None);
 
 // Assert
 result.IsSuccess.Should().BeFalse();
-result.Errors.Should().Contain(new DomainError(ErrorCodes.NotFound, "Course", $"A course with id {command.CourseId} hasn't been found."));
+result.Error.Should().Be(new DomainError(ErrorCodes.NotFound, "Course", $"A course with id {command.CourseId} hasn't been found."));
 }
 }

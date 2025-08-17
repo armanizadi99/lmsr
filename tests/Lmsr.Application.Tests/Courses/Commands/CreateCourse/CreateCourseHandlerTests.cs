@@ -63,6 +63,6 @@ var result = await handler.Handle(command, CancellationToken.None);
 
 // Assert
 result.IsSuccess.Should().BeFalse();
-result.Errors.Should().Contain(new DomainError(ErrorCodes.DuplicateEntity, "Course", "A course with the same name exists."));
+result.Error.Should().Be(new DomainError(ErrorCodes.DuplicateEntity, "Course", "A course with the same name exists."));
 }
 }

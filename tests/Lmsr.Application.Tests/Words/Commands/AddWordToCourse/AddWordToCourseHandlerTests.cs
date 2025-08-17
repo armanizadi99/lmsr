@@ -74,7 +74,7 @@ var result = await handler.Handle(command, CancellationToken.None);
 
 /// Assert
 result.IsSuccess.Should().BeFalse();
-result.Errors.Should().Contain(new DomainError(ErrorCodes.NotFound, "Course", "this course doesn't exist."));
+result.Error.Should().Be(new DomainError(ErrorCodes.NotFound, "Course", "this course doesn't exist."));
 }
 
 [Fact]
@@ -100,7 +100,7 @@ var result = await handler.Handle(command, CancellationToken.None);
 
 /// Assert
 result.IsSuccess.Should().BeFalse();
-result.Errors.Should().Contain(new DomainError(ErrorCodes.NotAuthorized, "UnauthorizedAccessToCourse", "You can't modify this course. You aren't the owner."));
+result.Error.Should().Be(new DomainError(ErrorCodes.NotAuthorized, "UnauthorizedAccessToCourse", "You can't modify this course. You aren't the owner."));
 }
 
 [Fact]
@@ -128,6 +128,6 @@ var result = await handler.Handle(command, CancellationToken.None);
 
 /// Assert
 result.IsSuccess.Should().BeFalse();
-result.Errors.Should().Contain(new DomainError(ErrorCodes.DuplicateEntity, "Word", "You can't add two words with the same term in a course."));
+result.Error.Should().Be(new DomainError(ErrorCodes.DuplicateEntity, "Word", "You can't add two words with the same term in a course."));
 }
 }
