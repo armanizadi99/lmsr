@@ -22,7 +22,7 @@ public async Task<IActionResult> Create([FromBody] CreateCourseDto dto)
 var result = await _bus.Send(new CreateCourseCommand(dto.Title, false));
 
 if(!result.IsSuccess)
-return BadRequest(result.Errors);
+return BadRequest(result.Error);
 
 return CreatedAtAction(nameof(GetCourseById), new { id = result.Value});
 }
@@ -33,7 +33,7 @@ public async Task<IActionResult> GetCourseById([FromQuery] int id)
 {
 var result = await _bus.Send(new GetAllCoursesQuery());
 if(!result.IsSuccess)
-return BadRequest(result.Errors);
+return BadRequest(result.Error);
 var course = result.Value.FirstOrDefault(c => c.Id == id);
 if(course == null)
 return NotFound();
@@ -53,7 +53,7 @@ public async Task<IActionResult> DeleteCourse([FromQuery] int courseId)
 {
 var result = await _bus.Send(new DeleteCourseCommand(courseId));
 if(!result.IsSuccess)
-return BadRequest(result.Errors);
+return BadRequest(result.Error);
 return NoContent();
 }
 }
