@@ -15,15 +15,17 @@ public WordTermUniquenessSpecificationTests(SqliteInMemoryFixture fixture)
 {
 _fixture = fixture;
 }
-[Fact]
-public void IsWordTermUnique_UniqueWord_ShouldReturnTrue()
+[Theory]
+[InlineData("unique")]
+[InlineData("Unique")]
+[InlineData("UNIQUE")]
+public void IsWordTermUnique_UniqueWord_ShouldReturnTrue(string uniqueWord)
 {
 // Arrange
 _fixture.Cleanup();
 _fixture.SeedWords();
 using var context = _fixture.CreateContext();
 var spec = new WordTermUniquenessSpecification(context);
-var uniqueWord = "unique";
 
 // Act Assert
 spec.IsWordTermUnique(uniqueWord, 1).Should().BeTrue();
