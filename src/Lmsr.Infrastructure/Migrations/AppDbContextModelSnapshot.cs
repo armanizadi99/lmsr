@@ -27,7 +27,8 @@ namespace Lmsr.Infrastructure.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -57,11 +58,12 @@ namespace Lmsr.Infrastructure.Migrations
 
                     b.Property<string>("Term")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Term")
+                    b.HasIndex("CourseId", "Term")
                         .IsUnique();
 
                     b.ToTable("Words", t =>
@@ -78,7 +80,8 @@ namespace Lmsr.Infrastructure.Migrations
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
@@ -88,10 +91,8 @@ namespace Lmsr.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Text")
+                    b.HasIndex("WordId", "Text")
                         .IsUnique();
-
-                    b.HasIndex("WordId");
 
                     b.ToTable("WordDefinition", t =>
                         {

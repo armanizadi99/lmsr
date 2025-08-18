@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lmsr.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250802074040_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250818083358_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,7 +30,8 @@ namespace Lmsr.Infrastructure.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -60,11 +61,12 @@ namespace Lmsr.Infrastructure.Migrations
 
                     b.Property<string>("Term")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Term")
+                    b.HasIndex("CourseId", "Term")
                         .IsUnique();
 
                     b.ToTable("Words", t =>
@@ -81,7 +83,8 @@ namespace Lmsr.Infrastructure.Migrations
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
@@ -91,10 +94,8 @@ namespace Lmsr.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Text")
+                    b.HasIndex("WordId", "Text")
                         .IsUnique();
-
-                    b.HasIndex("WordId");
 
                     b.ToTable("WordDefinition", t =>
                         {

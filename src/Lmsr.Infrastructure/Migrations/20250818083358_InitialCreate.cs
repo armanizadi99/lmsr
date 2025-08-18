@@ -5,7 +5,7 @@
 namespace Lmsr.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,7 +16,7 @@ namespace Lmsr.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", nullable: false, collation: "NOCASE"),
                     UserId = table.Column<string>(type: "TEXT", nullable: false),
                     IsPrivate = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
@@ -34,7 +34,7 @@ namespace Lmsr.Infrastructure.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     CourseId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Term = table.Column<string>(type: "TEXT", nullable: false)
+                    Term = table.Column<string>(type: "TEXT", nullable: false, collation: "NOCASE")
                 },
                 constraints: table =>
                 {
@@ -48,7 +48,7 @@ namespace Lmsr.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Text = table.Column<string>(type: "TEXT", nullable: false),
+                    Text = table.Column<string>(type: "TEXT", nullable: false, collation: "NOCASE"),
                     Type = table.Column<int>(type: "INTEGER", nullable: false),
                     WordId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -71,20 +71,15 @@ namespace Lmsr.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_WordDefinition_Text",
+                name: "IX_WordDefinition_WordId_Text",
                 table: "WordDefinition",
-                column: "Text",
+                columns: new[] { "WordId", "Text" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_WordDefinition_WordId",
-                table: "WordDefinition",
-                column: "WordId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Words_Term",
+                name: "IX_Words_CourseId_Term",
                 table: "Words",
-                column: "Term",
+                columns: new[] { "CourseId", "Term" },
                 unique: true);
         }
 
