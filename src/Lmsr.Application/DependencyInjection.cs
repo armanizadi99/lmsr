@@ -11,7 +11,9 @@ public static IServiceCollection AddApplication(this IServiceCollection services
 {
 services.AddScoped<IRequestHandler<CreateCourseCommand, Result<int>>, CreateCourseHandler>();
 services.AddScoped<IRequestHandler<DeleteCourseCommand, Result>, DeleteCourseHandler>();
+services.AddScoped<IRequestHandler<AddWordToCourseCommand, Result<Word>>, AddWordToCourseHandler>();
 services.AddScoped<IRequestHandler<GetAllCoursesQuery, Result<List<CourseViewModel>>>, GetAllCoursesHandler>();
+services.AddScoped<IRequestHandler<GetCourseWordByIdQuery, Result<WordViewModel>>, GetCourseWordByIdHandler>();
 
 services.AddValidatorsFromAssemblyContaining<CreateCourseHandler>();
 return services;
