@@ -12,6 +12,6 @@ _context = context;
 }
 public bool IsWordTermUnique(string term, int courseId)
 {
-return !_context.Words.Any(w => string.Equals(w.Term, term, StringComparison.OrdinalIgnoreCase) && w.CourseId == courseId);
+return !_context.Words.Any(w => w.Term == term && w.CourseId == courseId);
 }
 }
