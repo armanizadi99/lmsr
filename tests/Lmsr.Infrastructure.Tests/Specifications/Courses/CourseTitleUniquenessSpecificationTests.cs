@@ -15,8 +15,11 @@ public CourseTitleUniquenessSpecificationTests(SqliteInMemoryFixture fixture)
 {
 _fixture = fixture;
 }
-[Fact]
-public void IsTitleUnique_UniqueTitle_ShouldReturnTrue()
+[Theory]
+[InlineData("english")]
+[InlineData("English")]
+[InlineData("ENGLISH")]
+public void IsTitleUnique_UniqueTitle_ShouldReturnTrue(string uniqueTitle)
 {
 // Arrange
 _fixture.Cleanup();
@@ -25,14 +28,17 @@ using var context = _fixture.CreateContext();
 var spec = new CourseTitleUniquenessSpecification(context);
 
 // Act
-var result = spec.IsTitleUnique("english");
+var result = spec.IsTitleUnique(uniqueTitle);
 
 // Assert
 result.Should().BeTrue();
 }
 
-[Fact]
-public void IsTitleUnique_DuplicateTitle_ShouldReturnFalse()
+[Theory]
+[InlineData("course1")]
+[InlineData("Course1")]
+[InlineData("COURSE1")]
+public void IsTitleUnique_DuplicateTitle_ShouldReturnFalse(string duplicateTitle)
 {
 // Arrange
 _fixture.Cleanup();
@@ -41,7 +47,7 @@ using var context = _fixture.CreateContext();
 var spec = new CourseTitleUniquenessSpecification(context);
 
 // Act
-var result = spec.IsTitleUnique("course1");
+var result = spec.IsTitleUnique(duplicateTitle);
 
 // Assert
 result.Should().BeFalse();
