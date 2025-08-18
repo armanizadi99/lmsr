@@ -29,29 +29,32 @@ var uniqueWord = "unique";
 spec.IsWordTermUnique(uniqueWord, 1).Should().BeTrue();
 }
 
-[Fact]
-public void IsWordTermUnique_DuplicateWord_ShouldReturnFalse()
+[Theory]
+[InlineData("word1")]
+[InlineData("Word1")]
+public void IsWordTermUnique_DuplicateWord_ShouldReturnFalse(string duplicateWord )
 {
 // Arrange
 _fixture.Cleanup();
 _fixture.SeedWords();
 using var context = _fixture.CreateContext();
 var spec = new WordTermUniquenessSpecification(context);
-var duplicateWord = "word1";
 
 // Act Assert
 spec.IsWordTermUnique("word1", 1).Should().BeFalse();
 }
 
-[Fact]
-public void IsWordTermUnique_DuplicateWordButInADifferentCourse_ShouldReturnTrue()
+[Theory]
+[InlineData("word1")]
+[InlineData("Word1")]
+[InlineData("WORD1")]
+public void IsWordTermUnique_DuplicateWordButInADifferentCourse_ShouldReturnTrue(string uniqueWordInCourse )
 {
 // Arrange
 _fixture.Cleanup();
 _fixture.SeedWords();
 using var context = _fixture.CreateContext();
 var spec = new WordTermUniquenessSpecification(context);
-var uniqueWordInCourse = "word1";
 
 // Act Assert
 spec.IsWordTermUnique(uniqueWordInCourse, 4).Should().BeTrue();
