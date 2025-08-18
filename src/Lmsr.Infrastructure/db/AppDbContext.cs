@@ -40,17 +40,21 @@ t.HasCheckConstraint("CK_WordDefinition_Text_NotEmpty", "Text <> ''");
 
 modelBuilder.Entity<Course>()
 .Property(c => c.Title)
-.IsRequired();
+
+.IsRequired()
+.UseCollation("NOCASE");
 modelBuilder.Entity<Course>()
 .Property(c => c.UserId)
 .IsRequired();
 
 modelBuilder.Entity<Word>()
 .Property(c => c.Term)
-.IsRequired();
+.IsRequired()
+.UseCollation("NOCASE");
 
 modelBuilder.Entity<WordDefinition>()
 .Property(c => c.Text)
-.IsRequired();
+.IsRequired()
+.UseCollation("NOCASE");
 }
 }
