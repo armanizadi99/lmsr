@@ -31,5 +31,11 @@ var result = await _bus.Send(new GetCourseWordByIdQuery(Id));
 if(!result.IsSuccess)
 return BadRequest(result.Error);
 return Ok(result.Value);
+}[Route("/for")]
+[HttpGet]
+public async Task<IActionResult> GetAllWordsForCourse([FromQuery] int courseId)
+{
+var result = await _bus.Send(new GetCourseWordsQuery(courseId));
+return Ok(result.Value);
 }
 }
