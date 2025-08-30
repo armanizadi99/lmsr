@@ -21,4 +21,11 @@ public async Task<Word> GetWordByIdAsync(int id)
 {
 return await GetByIdAsync(id, w => w.Definitions);
 }
+public async Task<List<Word>> GetAllWordsForCourseAsync(int courseId)
+{
+return await _dbSet
+.Include(w => w.Definitions)
+.Where(w => w.CourseId == courseId)
+.ToListAsync();
+}
 }
