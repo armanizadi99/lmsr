@@ -272,4 +272,32 @@ word.Definitions.Should().NotBeNull();
 word.Definitions.Count.Should().Be(2);
 }
 }
+
+[Theory]
+[InlineData(1, 2, 2)]
+[InlineData(2, 1\, 2)]
+[InlineData(10, 0, 0)]
+public async Task GetAllWordsForCourseAsync_ShouldReturnAllWordsOfACourseWithLoadedDefinitions(int courseId, int expectedWordCount, int expectedDefCount)
+{
+// Arrange
+_fixture.Cleanup();
+_fixture.SeedWords();
+using var context = _fixture.CreateContext();
+var repo = new WordRepository(context);
+
+// Act
+var result = await repo.GetAllWordsForCourseAsync(courseId);
+
+// Assert
+result.Should().NotBeNull();
+result.Count.Should().Be(expectedWordCount);
+foreach( var word in result)
+{
+word.Definitions.Count.Should().Be(expectedDefCount);
+foreach(var def in word.Definitions)
+{
+def.Should().NotBeNull();
+}
+}
+}
 }
