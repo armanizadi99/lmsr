@@ -47,7 +47,6 @@ internal static class HostingExtensions
                 options.ClientId = "483520999623-7u387s1uf6bmjhtl9i431rgh7c53pb7r.apps.googleusercontent.com";
                 options.ClientSecret = "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";
             });
-
         return builder.Build();
     }
     
@@ -62,6 +61,7 @@ internal static class HostingExtensions
 
         app.UseStaticFiles();
         app.UseRouting();
+
         app.UseIdentityServer();
         app.UseAuthorization();
         

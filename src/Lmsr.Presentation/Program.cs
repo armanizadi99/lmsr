@@ -39,6 +39,14 @@ ValidateAudience = false
 
 builder.Services.AddAuthorization();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddCors(options =>
+{
+options.AddPolicy("AllowReactApp", builder =>
+builder.WithOrigins("http://localhost:3000", "https://localhost:3000") // your SPA origins
+.AllowAnyHeader()
+.AllowAnyMethod());
+});
+
 var app = builder.Build();
 
 
@@ -48,7 +56,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 app.UseRouting();
-
+app.UseCors("AllowReactApp"); // Place before UseAuthorization
 app.UseAuthentication();
 app.UseAuthorization();
 

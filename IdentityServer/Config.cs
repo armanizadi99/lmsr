@@ -53,11 +53,12 @@ new Client
     ClientId = "react",
     AllowedGrantTypes = GrantTypes.Code,
     RequirePkce = true, // For additional security (recommended for public clients)
-    RedirectUris = { "https://localhost:3000/signin-oidc" },
-    PostLogoutRedirectUris = { "https://localhost:7216/signout-callback-oidc" },
+    RedirectUris = { "http://localhost:3000/signin-oidc" },
+    PostLogoutRedirectUris = { "http://localhost:3000/" },
     AllowedScopes = { "openid", "profile"},
     AllowOfflineAccess = true, // Allows requesting refresh tokens
     RequireClientSecret = false,
+    AllowedCorsOrigins = { "http://localhost:3000" },
 }
         };
 }
