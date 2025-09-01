@@ -14,6 +14,7 @@ services.AddScoped<IRequestHandler<DeleteCourseCommand, Result>, DeleteCourseHan
 services.AddScoped<IRequestHandler<AddWordToCourseCommand, Result<Word>>, AddWordToCourseHandler>();
 services.AddScoped<IRequestHandler<GetAllCoursesQuery, Result<List<CourseViewModel>>>, GetAllCoursesHandler>();
 services.AddScoped<IRequestHandler<GetCourseWordByIdQuery, Result<WordViewModel>>, GetCourseWordByIdHandler>();
+services.AddScoped<INotificationHandler<CourseDeletedEvent>, CourseDeletedEventHandler>();
 
 services.AddValidatorsFromAssemblyContaining<CreateCourseHandler>();
 return services;
