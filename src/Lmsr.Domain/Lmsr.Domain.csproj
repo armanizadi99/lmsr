@@ -10,4 +10,8 @@
     <InternalsVisibleTo Include="Lmsr.Application.Tests" />
     <InternalsVisibleTo Include="Lmsr.Infrastructure.Tests" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="13.0.0" />
+  </ItemGroup>
 </Project>
