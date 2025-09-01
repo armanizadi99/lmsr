@@ -15,6 +15,12 @@ modelBuilder.Entity<Word>()
 .HasMany(w => w.Definitions)
 .WithOne()
 .HasForeignKey(wd => wd.WordId);
+modelBuilder.Entity<Word>()
+.HasOne<Course>()
+.WithMany()
+.HasForeignKey(w => w.CourseId)
+.OnDelete(DeleteBehavior.Cascade);
+
 modelBuilder.Entity<Course>()
 .HasIndex(c => c.Title)
 .IsUnique();
