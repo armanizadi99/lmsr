@@ -6,4 +6,4 @@ global using Lmsr.Domain.Aggregates.Specifications;
 global using Lmsr.Application.Repositories;
 global using Lmsr.Application.Interfaces;
 global using Lmsr.Application.ViewModels;
-global using Lmsr.Domain.Aggregates;
+global using Lmsr.Domain.Aggregates.Events;
