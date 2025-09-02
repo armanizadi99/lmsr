@@ -23,6 +23,7 @@ public void IsWordTermUnique_UniqueWord_ShouldReturnTrue(string uniqueWord)
 {
 // Arrange
 _fixture.Cleanup();
+_fixture.SeedDb();
 _fixture.SeedWords();
 using var context = _fixture.CreateContext();
 var spec = new WordTermUniquenessSpecification(context);
@@ -38,6 +39,7 @@ public void IsWordTermUnique_DuplicateWord_ShouldReturnFalse(string duplicateWor
 {
 // Arrange
 _fixture.Cleanup();
+_fixture.SeedDb();
 _fixture.SeedWords();
 using var context = _fixture.CreateContext();
 var spec = new WordTermUniquenessSpecification(context);
@@ -54,6 +56,7 @@ public void IsWordTermUnique_DuplicateWordButInADifferentCourse_ShouldReturnTrue
 {
 // Arrange
 _fixture.Cleanup();
+_fixture.SeedDb();
 _fixture.SeedWords();
 using var context = _fixture.CreateContext();
 var spec = new WordTermUniquenessSpecification(context);

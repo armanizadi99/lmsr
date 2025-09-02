@@ -21,6 +21,7 @@ public async Task Add_Word_ShouldAddWord()
 {
 // Arrange
 _fixture.Cleanup();
+_fixture.SeedDb();
 using var context = _fixture.CreateContext();
 var repo = new WordRepository(context);
 var term = "word1";
@@ -41,6 +42,7 @@ public async Task Add_DuplicateWordWithDifferentCourseIds_ShouldAddDuplicateWord
 {
 // Arrange
 _fixture.Cleanup();
+_fixture.SeedDb();
 using var context = _fixture.CreateContext();
 var repo = new WordRepository(context);
 var word1 = new Word("word1", 1);
@@ -63,6 +65,7 @@ public async Task Add_DuplicateWordWithSameCourseIds_ShouldThrowDbUpdateExceptio
 {
 // Arrange
 _fixture.Cleanup();
+_fixture.SeedDb();
 using var context = _fixture.CreateContext();
 var repo = new WordRepository(context);
 var word1 = new Word("word1", 1);
@@ -85,6 +88,7 @@ public async Task Add_WordWithNullTerm_ShouldThrowSqliteException()
 {
 // Arrange
 _fixture.Cleanup();
+_fixture.SeedDb();
 using var context = _fixture.CreateContext();
 var sql = "INSERT INTO Words(Term, CourseId) Values({0}, {1})";
 string? term = null;
@@ -103,6 +107,7 @@ public async Task Add_WordWithEmptyTerm_ShouldThrowSqliteException()
 {
 // Arrange
 _fixture.Cleanup();
+_fixture.SeedDb();
 using var context = _fixture.CreateContext();
 var sql = "INSERT INTO Words(Term, CourseId) Values({0}, {1})";
 string term = "";
@@ -121,6 +126,7 @@ public async Task Delete_ExistingWord_ShouldDeleteWord()
 {
 // Arrange
 _fixture.Cleanup();
+_fixture.SeedDb();
 _fixture.SeedWords();
 using var context = _fixture.CreateContext();
 var repo = new WordRepository(context);
@@ -141,6 +147,7 @@ public async Task Delete_NoneExistingWord_ShouldThrowArgumentNullException()
 {
 // Arrange
 _fixture.Cleanup();
+_fixture.SeedDb();
 _fixture.SeedWords();
 using var context = _fixture.CreateContext();
 var repo = new WordRepository(context);
@@ -159,6 +166,7 @@ public async Task Add_WordWithValidDefinitions_ShouldAddWordWithDefinitions()
 {
 // Arrange
 _fixture.Cleanup();
+_fixture.SeedDb();
 using var context = _fixture.CreateContext();
 var repo = new WordRepository(context);
 var word = new Word("word1", 1);
@@ -180,6 +188,7 @@ public async Task Delete_WordWithDefinitions_ShouldRemoveWordWithItsDefinitions(
 {
 // Arrange
 _fixture.Cleanup();
+_fixture.SeedDb();
 _fixture.SeedWords();
 using var context = _fixture.CreateContext();
 var repo = new WordRepository(context);
@@ -200,6 +209,7 @@ public async Task GetById_ExistingWordWithDefinitions_ShouldReturnWordWithSubent
 {
 // Arrange
 _fixture.Cleanup();
+_fixture.SeedDb();
 _fixture.SeedWords();
 using var context = _fixture.CreateContext();
 var repo = new WordRepository(context);
@@ -217,6 +227,7 @@ public async Task GetWordById_ExistingWordWithDefinitions_ShouldReturnWordWithIt
 {
 // Arrange
 _fixture.Cleanup();
+_fixture.SeedDb();
 _fixture.SeedWords();
 using var context = _fixture.CreateContext();
 var repo = new WordRepository(context);
@@ -235,6 +246,7 @@ public async Task GetAll_WordsWithDefinitions_ShouldReturnAllExistingWordsWithDe
 {
 // Arrange
 _fixture.Cleanup();
+_fixture.SeedDb();
 _fixture.SeedWords();
 using var context = _fixture.CreateContext();
 var repo = new WordRepository(context);
@@ -256,6 +268,7 @@ public async Task GetAllWords_WordsWithDefinitions_ShouldReturnAllExistingWordsW
 {
 // Arrange
 _fixture.Cleanup();
+_fixture.SeedDb();
 _fixture.SeedWords();
 using var context = _fixture.CreateContext();
 var repo = new WordRepository(context);
@@ -275,12 +288,13 @@ word.Definitions.Count.Should().Be(2);
 
 [Theory]
 [InlineData(1, 2, 2)]
-[InlineData(2, 1\, 2)]
+[InlineData(2, 1, 2)]
 [InlineData(10, 0, 0)]
 public async Task GetAllWordsForCourseAsync_ShouldReturnAllWordsOfACourseWithLoadedDefinitions(int courseId, int expectedWordCount, int expectedDefCount)
 {
 // Arrange
 _fixture.Cleanup();
+_fixture.SeedDb();
 _fixture.SeedWords();
 using var context = _fixture.CreateContext();
 var repo = new WordRepository(context);

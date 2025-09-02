@@ -210,4 +210,29 @@ var course = await repo.GetCourseByIdAsync(10);
 // Assert
 course.Should().BeNull();
 }
+
+[Fact]
+public async Task Delete_CourseWithExistingWords_ShouldDeleteCourseWithAssociatedWords()
+{
+// Arrange
+_fixture.Cleanup();
+_fixture.SeedDb();
+_fixture.SeedWords();
+using var context = _fixture.CreateContext();
+var courseRepo = new CourseRepository(context);
+var wordRepo = new WordRepository(context);
+var courseId = 1;
+var courseWordsBeforeDeletion = await wordRepo.GetAllWordsForCourseAsync(courseId);
+
+// Act
+var courseToDelete = await courseRepo.GetCourseByIdAsync(courseId);
+courseRepo.Delete(courseToDelete);
+await context.SaveChangesAsync();
+
+// Assert
+using var assertContext = _fixture.CreateContext();
+wordRepo = new WordRepository(assertContext);
+courseWordsBeforeDeletion.Count.Should().Be(2);
+(await wordRepo.GetAllWordsForCourseAsync(courseId)).Count.Should().Be(0);
+}
 }

@@ -22,8 +22,10 @@ public async Task SaveChanges_ShouldSaveChanges()
 _fixture.Cleanup();
 using var context = _fixture.CreateContext();
 var unitOfWork = new UnitOfWork(context);
-await unitOfWork.CourseRepo.AddAsync(new Course("course1", "arman", false));
-await unitOfWork.WordRepo.AddAsync(new Word("word1", 1));
+var course = new Course("course1", "arman", false);
+await unitOfWork.CourseRepo.AddAsync(course);
+await unitOfWork.SaveChangesAsync();
+await unitOfWork.WordRepo.AddAsync(new Word("word1", course.Id));
 
 // Act
 await unitOfWork.SaveChangesAsync();
