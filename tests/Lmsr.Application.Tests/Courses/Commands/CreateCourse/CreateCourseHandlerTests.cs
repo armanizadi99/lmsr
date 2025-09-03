@@ -16,7 +16,7 @@ public async Task Handle_ValidCommand_ShouldMakeACourse()
 {
 // Arrange
 var isPrivate = false;
-var handler = BuildHandler();
+var handler = new CreateCourseHandler(MockUnitOfWork.Object, MockTitleUniquenessSpec.Object, MockUserContext.Object);
 var command = new CreateCourseCommand(UniqueTitle, isPrivate);
 
 // Act
@@ -35,7 +35,7 @@ MockUnitOfWork.Verify(m => m.SaveChangesAsync(), Times.Once);
 public async Task Handle_DuplicateTitle_ShouldReturnError()
 {
 // Arrange
-var handler = BuildHandler();
+var handler = new CreateCourseHandler(MockUnitOfWork.Object, MockTitleUniquenessSpec.Object, MockUserContext.Object);
 var command = new CreateCourseCommand(DuplicateTitle, false);
 
 // Act

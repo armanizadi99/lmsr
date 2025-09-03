@@ -28,13 +28,12 @@ c.Id = 1;
 CapturedCourse = c;
 })
 .Returns(Task.CompletedTask);
+MockCourseRepo.Setup(m => m.Delete(It.IsAny<Course>()))
+.Callback<Course>(c => CapturedCourse = c);
+
 MockCourseRepo.Setup(m => m.GetByIdAsync(1))
 .ReturnsAsync(new Course("course1", DefaultUserId, false));
 MockCourseRepo.Setup(m => m.GetByIdAsync(2))
 .ReturnsAsync(new Course("course2", Guid.NewGuid().ToString(), false));
-}
-protected CreateCourseHandler BuildHandler()
-{
-return new CreateCourseHandler(MockUnitOfWork.Object, MockTitleUniquenessSpec.Object, MockUserContext.Object);
 }
 }
