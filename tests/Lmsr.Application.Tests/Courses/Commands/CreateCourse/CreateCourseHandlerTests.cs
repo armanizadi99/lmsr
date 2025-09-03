@@ -9,28 +9,15 @@ using FluentAssertions;
 using Moq;
 namespace Lmsr.Application.Tests;
 
-public class CreateCourseHandlerTests
+public class CreateCourseHandlerTests : CourseHandlerTestsBase
 {
 [Fact]
 public async Task Handle_ValidCommand_ShouldMakeACourse()
 {
 // Arrange
-var mockTitleUniquenessSpec = new Mock<ICourseTitleUniquenessSpecification>();
-var mockUnitOfWork = new Mock<IUnitOfWork>();
-var mockUserContext = new Mock<IUserContext>();
-var mockCourseRepo = new Mock<ICourseRepository>();
-var userId = Guid.NewGuid().ToString();
-Course capturedCourse = null;
-mockTitleUniquenessSpec.Setup(m => m.IsTitleUnique(It.IsAny<string>())).Returns(true);
-mockCourseRepo.Setup(m => m.AddAsync(It.IsAny<Course>()))
-.Callback<Course>(c => {c.Id=1; capturedCourse = c;})
-.Returns(Task.CompletedTask);
-mockUnitOfWork.Setup(m => m.CourseRepo).Returns(mockCourseRepo.Object);
-mockUserContext.Setup(m => m.UserId).Returns(userId);
-var title = "valid title";
 var isPrivate = false;
-CreateCourseHandler handler = new CreateCourseHandler(mockUnitOfWork.Object, mockTitleUniquenessSpec.Object, mockUserContext.Object);
-CreateCourseCommand command = new CreateCourseCommand(title, isPrivate);
+var handler = BuildHandler();
+var command = new CreateCourseCommand(UniqueTitle, isPrivate);
 
 // Act
 var result = await handler.Handle(command, CancellationToken.None);
@@ -38,25 +25,18 @@ var result = await handler.Handle(command, CancellationToken.None);
 // Assert
 result.IsSuccess.Should().BeTrue();
 result.Value.Should().Be(1);
-capturedCourse.Title.Should().Be(title);
-capturedCourse.UserId.Should().Be(userId);
-capturedCourse.IsPrivate.Should().Be(isPrivate);
-mockUnitOfWork.Verify(m => m.SaveChangesAsync(), Times.Once);
+CapturedCourse.Title.Should().Be(UniqueTitle);
+CapturedCourse.UserId.Should().Be(DefaultUserId);
+CapturedCourse.IsPrivate.Should().Be(isPrivate);
+MockUnitOfWork.Verify(m => m.SaveChangesAsync(), Times.Once);
 }
 
 [Fact]
 public async Task Handle_DuplicateTitle_ShouldReturnError()
 {
 // Arrange
-var mockTitleUniquenessSpec = new Mock<ICourseTitleUniquenessSpecification>();
-var mockUserContext = new Mock<IUserContext>();
-var mockUnitOfWork = new Mock<IUnitOfWork>();
-var userId = Guid.NewGuid().ToString();
-var duplicateTitle = "course1";
-mockTitleUniquenessSpec.Setup(m => m.IsTitleUnique(duplicateTitle)).Returns(false);
-mockUserContext.Setup(m => m.UserId).Returns(userId);
-var handler = new CreateCourseHandler(mockUnitOfWork.Object, mockTitleUniquenessSpec.Object, mockUserContext.Object);
-var command = new CreateCourseCommand(duplicateTitle, false);
+var handler = BuildHandler();
+var command = new CreateCourseCommand(DuplicateTitle, false);
 
 // Act
 var result = await handler.Handle(command, CancellationToken.None);
