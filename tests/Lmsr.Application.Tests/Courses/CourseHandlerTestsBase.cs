@@ -33,4 +33,8 @@ MockCourseRepo.Setup(m => m.GetByIdAsync(1))
 MockCourseRepo.Setup(m => m.GetByIdAsync(2))
 .ReturnsAsync(new Course("course2", Guid.NewGuid().ToString(), false));
 }
+protected CreateCourseHandler BuildHandler()
+{
+return new CreateCourseHandler(MockUnitOfWork.Object, MockTitleUniquenessSpec.Object, MockUserContext.Object);
+}
 }
