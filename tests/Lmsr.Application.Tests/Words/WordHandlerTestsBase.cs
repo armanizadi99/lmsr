@@ -3,14 +3,18 @@ public abstract class WordHandlerTestsBase : HandlerTestsBase
 {
 protected readonly Mock<IWordRepository> MockWordRepo = new();
 protected readonly Mock<ICourseRepository> MockCourseRepo = new();
-protected readonly Mock<IWordTermUniquenessSpecification> MockWordTermUniquenessSpec;
+protected readonly Mock<IWordTermUniquenessSpecification> MockWordTermUniquenessSpec = new();
 protected Word CapturedWord = null;
 protected readonly string UniqueWord = "UniqueWord";
 protected readonly string DuplicateWord = "DuplicateWord";
 protected int CourseId = 1;
+protected int NoneExistingCourseId = 10000;
+protected readonly Course DefaultCourse;
 
 protected WordHandlerTestsBase()
 {
+DefaultCourse = new Course("course1", DefaultUserId, false);
+DefaultCourse.Id = 1;
 MockUnitOfWork.Setup(m => m.WordRepo)
 .Returns(MockWordRepo.Object);
 MockUnitOfWork.Setup(m => m.CourseRepo)
@@ -22,7 +26,9 @@ SetupMockCourseRepo();
 protected void SetupMockCourseRepo()
 {
 MockCourseRepo.Setup(m => m.GetByIdAsync(1))
-.ReturnsAsync(new Course("course1", DefaultUserId, false));
+.ReturnsAsync(DefaultCourse);
+MockCourseRepo.Setup(m => m.GetCourseByIdAsync(1))
+.ReturnsAsync(DefaultCourse);
 }
 protected void SetupMockWordRepo()
 {
@@ -32,6 +38,8 @@ w.Id = 1;
 CapturedWord = w;
 })
 .Returns(Task.CompletedTask);
+MockWordRepo.Setup(m => m.GetByIdAsync(1))
+.ReturnsAsync(new Word(UniqueWord, CourseId));
 }
 
 protected void SetupMockWordTermUniquenessSpec()

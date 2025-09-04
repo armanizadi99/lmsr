@@ -1,27 +1,12 @@
 namespace Lmsr.Application.Tests;
-public class DeleteWordHandlerTests
+public class DeleteWordHandlerTests : WordHandlerTestsBase
 {
-public (Mock<IUnitOfWork>, Mock<IUserContext>, Mock<ICourseRepository>, Mock<IWordRepository>) MockInterfaces(string userId, Course course, Word word)
-{
-var mockUnitOfWork = new Mock<IUnitOfWork>();
-var mockCourseRepo = new Mock<ICourseRepository>();
-mockCourseRepo.Setup(m => m.GetByIdAsync(1)).ReturnsAsync(course);
-mockUnitOfWork.Setup(m => m.CourseRepo).Returns(mockCourseRepo.Object);
-var mockWordRepo = new Mock<IWordRepository>();
-mockWordRepo.Setup(m => m.GetByIdAsync(1)).ReturnsAsync(word);
-mockUnitOfWork.Setup(m => m.WordRepo).Returns(mockWordRepo.Object);
-var mockUserContext = new Mock<IUserContext>();
-mockUserContext.Setup(m => m.UserId).Returns(userId);
-return (mockUnitOfWork, mockUserContext, mockCourseRepo, mockWordRepo);
-}
 [Fact]
 public async Task Handle_ExistingWord_ShouldDeleteWord()
 {
 // Arrange
-var userId = "arman";
-var (mockUnitOfWork, mockUserContext, mockCourseRepo, mockWordRepo) = MockInterfaces(userId, new Course("course1", userId, false), new Word("word1", 1));
 var wordId = 1;
-var handler = new DeleteWordHandler(mockUnitOfWork.Object, mockUserContext.Object);
+var handler = new DeleteWordHandler(MockUnitOfWork.Object, MockUserContext.Object);
 var command = new DeleteWordCommand(wordId);
 
 // Act
@@ -35,10 +20,8 @@ result.IsSuccess.Should().BeTrue();
 public async Task Handle_NoneExistingWord_ShouldReturnDomainError()
 {
 // Arrange
-string userId = "";
-var (mockUnitOfWork, mockUserContext, _, __) = MockInterfaces(userId, null, null);
-var handler = new DeleteWordHandler(mockUnitOfWork.Object, mockUserContext.Object);
-var command = new DeleteWordCommand(1);
+var handler = new DeleteWordHandler(MockUnitOfWork.Object, MockUserContext.Object);
+var command = new DeleteWordCommand(2);
 
 // Act
 var result = await handler.Handle(command, CancellationToken.None);
@@ -52,9 +35,9 @@ result.Error.Should().Be(new DomainError(ErrorCodes.NotFound, "Word", "No such w
 public async Task Handle_UnauthorizedAccessToWord_ShouldReturnDomainError()
 {
 // Arrange
-var userId = "someone else";
-var (mockUnitOfWork, mockUserContext, _, __) = MockInterfaces(userId, new Course("course1", "arman", false), new Word("word1", 1));
-var handler = new DeleteWordHandler(mockUnitOfWork.Object, mockUserContext.Object);
+var differentUserId = Guid.NewGuid().ToString();
+MockUserContext.Setup(m => m.UserId).Returns(differentUserId);
+var handler = new DeleteWordHandler(MockUnitOfWork.Object, MockUserContext.Object);
 var command = new DeleteWordCommand(1);
 
 // Act

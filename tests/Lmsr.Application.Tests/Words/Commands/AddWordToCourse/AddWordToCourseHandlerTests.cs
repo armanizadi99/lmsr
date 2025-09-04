@@ -9,65 +9,32 @@ using FluentAssertions;
 using Moq;
 namespace Lmsr.Application.Tests;
 
-public class AdWordToCourseHandlerTests
+public class AdWordToCourseHandlerTests : WordHandlerTestsBase
 {
 [Fact]
 public async Task Handle_ValidCommand_ShouldAddWordToCourse()
 {
 // Arrange
-var mockUnitOfWork = new Mock<IUnitOfWork>();
-var mockWordRepo = new Mock<IWordRepository>();
-var mockCourseRepo = new Mock<ICourseRepository>();
-var mockWordTermUniquenessSpec = new Mock<IWordTermUniquenessSpecification>();
-var mockUserContext = new Mock<IUserContext>();
-Word capturedWord = null;
-var userId = Guid.NewGuid().ToString();
-var course = new Course("course1", userId, false);
-mockWordRepo.Setup(m => m.AddAsync(It.IsAny<Word>()))
-.Callback<Word>(w => {
-w.Id=1;
-capturedWord = w;
-}
-)
-.Returns(Task.CompletedTask);
-mockCourseRepo.Setup(m => m.GetCourseByIdAsync(1))
-.ReturnsAsync(course);
-mockUnitOfWork.Setup(m => m.WordRepo)
-.Returns(mockWordRepo.Object);
-mockUnitOfWork.Setup(m => m.CourseRepo)
-.Returns(mockCourseRepo.Object);
-mockWordTermUniquenessSpec.Setup(m => m.IsWordTermUnique(It.IsAny<string>(), It.IsAny<int>()))
-.Returns(true);
-mockUserContext.Setup(m => m.UserId).Returns(userId);
-var handler = new AddWordToCourseHandler(mockUnitOfWork.Object, mockUserContext.Object, mockWordTermUniquenessSpec.Object);
-var command = new AddWordToCourseCommand("word1", 1);
+var handler = new AddWordToCourseHandler(MockUnitOfWork.Object, MockUserContext.Object, MockWordTermUniquenessSpec.Object);
+var command = new AddWordToCourseCommand(UniqueWord, CourseId);
 
 // Act
 var result = await handler.Handle(command, CancellationToken.None);
 
 // Assert
-mockUnitOfWork.Verify(m => m.SaveChangesAsync(), Times.Once);
 result.IsSuccess.Should().BeTrue();
 result.Value.Id.Should().Be(1);
-result.Value.Term.Should().Be("word1");
-course.WordsReference.Should().Contain(1);
+result.Value.Term.Should().Be(UniqueWord);
+DefaultCourse.WordsReference.Should().Contain(1);
+MockUnitOfWork.Verify(m => m.SaveChangesAsync(), Times.Once);
 }
 
 [Fact]
 public async Task Handle_NoneExistingCourse_ShouldReturnNotFoundError()
 {
 // Arrange
-var mockUnitOfWork = new Mock<IUnitOfWork>();
-var mockCourseRepo = new Mock<ICourseRepository>();
-var mockWordTermUniquenessSpec = new Mock<IWordTermUniquenessSpecification>();
-var mockUserContext = new Mock<IUserContext>();
-var course = new Course("course1", "123", false);
-mockCourseRepo.Setup(m => m.GetCourseByIdAsync(It.IsAny<int>()))
-.ReturnsAsync((Course)null);
-mockUnitOfWork.Setup(m => m.CourseRepo)
-.Returns(mockCourseRepo.Object);
-var handler = new AddWordToCourseHandler(mockUnitOfWork.Object, mockUserContext.Object, mockWordTermUniquenessSpec.Object);
-var command = new AddWordToCourseCommand("word1", 1);
+var handler = new AddWordToCourseHandler(MockUnitOfWork.Object, MockUserContext.Object, MockWordTermUniquenessSpec.Object);
+var command = new AddWordToCourseCommand(UniqueWord, NoneExistingCourseId);
 
 // Act
 var result = await handler.Handle(command, CancellationToken.None);
@@ -81,19 +48,10 @@ result.Error.Should().Be(new DomainError(ErrorCodes.NotFound, "Course", "this co
 public async Task Handle_CourseWithDifferentOwner_ShouldReturnNotAuthorizedError()
 {
 // Arrange
-var mockUnitOfWork = new Mock<IUnitOfWork>();
-var mockCourseRepo = new Mock<ICourseRepository>();
-var mockWordTermUniquenessSpec = new Mock<IWordTermUniquenessSpecification>();
-var mockUserContext = new Mock<IUserContext>();
-var userId = Guid.NewGuid().ToString();
-var course = new Course("course1", userId, false);
-mockCourseRepo.Setup(m => m.GetCourseByIdAsync(It.IsAny<int>()))
-.ReturnsAsync(course);
-mockUnitOfWork.Setup(m => m.CourseRepo)
-.Returns(mockCourseRepo.Object);
-mockUserContext.Setup(m => m.UserId).Returns("arman");
-var handler = new AddWordToCourseHandler(mockUnitOfWork.Object, mockUserContext.Object, mockWordTermUniquenessSpec.Object);
-var command = new AddWordToCourseCommand("word1", 1);
+var differentUserId = Guid.NewGuid().ToString();
+MockUserContext.Setup(m => m.UserId).Returns(differentUserId);
+var handler = new AddWordToCourseHandler(MockUnitOfWork.Object, MockUserContext.Object, MockWordTermUniquenessSpec.Object);
+var command = new AddWordToCourseCommand(UniqueWord, CourseId);
 
 // Act
 var result = await handler.Handle(command, CancellationToken.None);
@@ -107,21 +65,8 @@ result.Error.Should().Be(new DomainError(ErrorCodes.NotAuthorized, "Unauthorized
 public async Task Handle_DuplicateWord_ShouldReturnDuplicateEntityError()
 {
 // Arrange
-var mockUnitOfWork = new Mock<IUnitOfWork>();
-var mockCourseRepo = new Mock<ICourseRepository>();
-var mockWordTermUniquenessSpec = new Mock<IWordTermUniquenessSpecification>();
-var mockUserContext = new Mock<IUserContext>();
-var userId = Guid.NewGuid().ToString();
-var course = new Course("course1", userId, false);
-course.Id=1;
-mockCourseRepo.Setup(m => m.GetCourseByIdAsync(It.IsAny<int>()))
-.ReturnsAsync(course);
-mockUnitOfWork.Setup(m => m.CourseRepo)
-.Returns(mockCourseRepo.Object);
-mockUserContext.Setup(m => m.UserId).Returns(userId);
-mockWordTermUniquenessSpec.Setup(m => m.IsWordTermUnique("word1", 1)).Returns(false);
-var handler = new AddWordToCourseHandler(mockUnitOfWork.Object, mockUserContext.Object, mockWordTermUniquenessSpec.Object);
-var command = new AddWordToCourseCommand("word1", 1);
+var handler = new AddWordToCourseHandler(MockUnitOfWork.Object, MockUserContext.Object, MockWordTermUniquenessSpec.Object);
+var command = new AddWordToCourseCommand(DuplicateWord, CourseId);
 
 // Act
 var result = await handler.Handle(command, CancellationToken.None);
