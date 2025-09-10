@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using MediatR;
 using Lmsr.Domain.Aggregates;
 using Lmsr.Application.Courses;
+using Lmsr.Application.Words;
 using Lmsr.Presentation.Dtos;
 using System.Security.Claims;
 namespace Lmsr.Presentation.Controllers;
@@ -38,5 +39,14 @@ public async Task<IActionResult> GetAllWordsForCourse([FromQuery] int courseId)
 {
 var result = await _bus.Send(new GetCourseWordsQuery(courseId));
 return Ok(result.Value);
+}
+
+[HttpDelete]
+public async Task<IActionResult> DeleteWord([FromQuery] int wordId)
+{
+var result = await _bus.Send(new DeleteWordCommand(wordId));
+if(!result.IsSuccess)
+return BadRequest(result.Error);
+return NoContent();
 }
 }
