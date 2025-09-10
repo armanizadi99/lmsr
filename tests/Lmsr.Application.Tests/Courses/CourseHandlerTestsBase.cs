@@ -35,5 +35,16 @@ MockCourseRepo.Setup(m => m.GetByIdAsync(1))
 .ReturnsAsync(new Course("course1", DefaultUserId, false));
 MockCourseRepo.Setup(m => m.GetByIdAsync(2))
 .ReturnsAsync(new Course("course2", Guid.NewGuid().ToString(), false));
+var courses = new List<Course>();
+var course1 = new Course("english basic words", "arman", false);
+course1.Id = 1;
+var course2 = new Course("english intermediate words", "arman", false);
+course2.Id = 2;
+var course3 = new Course("english curses", "baduser", true);
+course3.Id = 3;
+courses.AddRange(course1, course2, course3);
+MockCourseRepo.Setup(m => m.GetAllCoursesAsync())
+.ReturnsAsync(courses);
+
 }
 }
