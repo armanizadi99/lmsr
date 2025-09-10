@@ -1,11 +1,3 @@
-using Xunit;
-using FluentAssertions;
-using Moq;
-using Lmsr.Domain.Aggregates;
-using Lmsr.Domain.Common;
-using Lmsr.Application.Courses;
-using Lmsr.Application.Repositories;
-using Lmsr.Application.Interfaces;
 namespace Lmsr.Application.Tests;
 
 public class DeleteCourseTests : CourseHandlerTestsBase

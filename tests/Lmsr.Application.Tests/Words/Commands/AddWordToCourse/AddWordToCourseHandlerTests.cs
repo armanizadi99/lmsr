@@ -1,12 +1,3 @@
-using Lmsr.Application.Courses;
-using Lmsr.Application.Repositories;
-using Lmsr.Application.Interfaces;
-using Lmsr.Domain.Common;
-using Lmsr.Domain.Aggregates;
-using Lmsr.Domain.Aggregates.Specifications;
-using Xunit;
-using FluentAssertions;
-using Moq;
 namespace Lmsr.Application.Tests;
 
 public class AdWordToCourseHandlerTests : WordHandlerTestsBase

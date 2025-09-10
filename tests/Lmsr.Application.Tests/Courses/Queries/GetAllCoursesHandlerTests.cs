@@ -1,12 +1,3 @@
-using Xunit;
-using FluentAssertions;
-using FluentAssertions.Collections;
-using Moq;
-using Lmsr.Application.Courses;
-using Lmsr.Application.Repositories;
-using Lmsr.Application.ViewModels;
-using Lmsr.Domain.Aggregates;
-using Lmsr.Domain.Common;
 namespace Lmsr.Application.Tests;
 public class GetAllCoursesHandlerTests : CourseHandlerTestsBase
 {
