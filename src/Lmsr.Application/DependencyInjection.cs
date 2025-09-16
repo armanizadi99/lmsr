@@ -14,6 +14,9 @@ services.AddScoped<IRequestHandler<CreateCourseCommand, Result<int>>, CreateCour
 services.AddScoped<IRequestHandler<DeleteCourseCommand, Result>, DeleteCourseHandler>();
 services.AddScoped<IRequestHandler<AddWordToCourseCommand, Result<Word>>, AddWordToCourseHandler>();
 services.AddScoped<IRequestHandler<DeleteWordCommand, Result>, DeleteWordHandler>();
+services.AddScoped<IRequestHandler<AddDefinitionCommand, Result<WordDefinitionViewModel>>, AddDefinitionHandler>();
+services.AddScoped<IRequestHandler<DeleteDefinitionCommand, Result>, DeleteDefinitionHandler>();
+
 services.AddScoped<IRequestHandler<GetAllCoursesQuery, Result<List<CourseViewModel>>>, GetAllCoursesHandler>();
 services.AddScoped<IRequestHandler<GetCourseWordByIdQuery, Result<WordViewModel>>, GetCourseWordByIdHandler>();
 services.AddScoped<INotificationHandler<CourseDeletedEvent>, CourseDeletedEventHandler>();
