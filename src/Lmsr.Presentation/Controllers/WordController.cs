@@ -32,7 +32,8 @@ var result = await _bus.Send(new GetCourseWordByIdQuery(Id));
 if(!result.IsSuccess)
 return BadRequest(result.Error);
 return Ok(result.Value);
-}[Route("for")]
+}
+[Route("for")]
 [HttpGet]
 [AllowAnonymous]
 public async Task<IActionResult> GetAllWordsForCourse([FromQuery] int courseId)
@@ -48,5 +49,29 @@ var result = await _bus.Send(new DeleteWordCommand(wordId));
 if(!result.IsSuccess)
 return BadRequest(result.Error);
 return NoContent();
+}
+[Route("definition")]
+[HttpPost]
+public async Task<IActionResult> AddDefinition([FromBody] AddDefinitionDto definitionDto)
+{
+var result = await _bus.Send(new AddDefinitionCommand(definitionDto.WordId, definitionDto.Text, definitionDto.Type));
+if(!result.IsSuccess)
+return BadRequest(result.Error);
+return CreatedAtAction(nameof(GetDefinitionById), new {Id = result.Value.Id}, result.Value);
+}
+[Route("definition")]
+[HttpDelete]
+public async Task<IActionResult> DeleteDefinition([FromQuery] int definitionId,  [FromQuery] int wordId)
+{
+var result = await _bus.Send(new DeleteDefinitionCommand(wordId, definitionId));
+if(!result.IsSuccess)
+return BadRequest(result.Error);
+return NoContent();
+}
+[Route("definition")]
+[HttpGet]
+public async Task<IActionResult> GetDefinitionById([FromQuery] int definitionId)
+{
+return Ok();
 }
 }
