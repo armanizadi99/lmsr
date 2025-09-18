@@ -7,8 +7,11 @@ protected readonly Mock<IWordTermUniquenessSpecification> MockWordTermUniqueness
 protected Word CapturedWord = null;
 protected readonly string UniqueWord = "UniqueWord";
 protected readonly string DuplicateWord = "DuplicateWord";
+protected readonly string DefinitionText = "default definition";
+protected readonly WordType DefaultType = WordType.Noun;
 protected int CourseId = 1;
 protected int NoneExistingCourseId = 10000;
+protected int NoneExistingWordId = 10000;
 protected readonly Course DefaultCourse;
 
 protected WordHandlerTestsBase()
@@ -39,6 +42,8 @@ CapturedWord = w;
 })
 .Returns(Task.CompletedTask);
 MockWordRepo.Setup(m => m.GetByIdAsync(1))
+.ReturnsAsync(new Word(UniqueWord, CourseId));
+MockWordRepo.Setup(m => m.GetWordByIdAsync(1))
 .ReturnsAsync(new Word(UniqueWord, CourseId));
 }
 
